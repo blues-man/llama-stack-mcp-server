@@ -1,4 +1,4 @@
-Llama Stack MCP Kickstart deployment completed successfully!
+Llama Stack MCP Quickstart deployment completed successfully!
 
 Components deployed:
 {{- if index .Values.components "llama3-2-3b" "enabled" }}

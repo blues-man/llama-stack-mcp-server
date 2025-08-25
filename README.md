@@ -1,6 +1,6 @@
 # Llama Stack with MCP Server
 
-Welcome to the Llama Stack with MCP Server Kickstart!
+Welcome to the Llama Stack with MCP Server Quickstart!
 
 Use this to quickly deploy Llama 3.2-3B on vLLM with Llama Stack and MCP servers in your OpenShift AI environment.
 
@@ -28,7 +28,7 @@ To see how it's done, jump straight to [installation](#install).
 
 ## Description
 
-This kickstart provides a complete setup for deploying:
+This quickstart provides a complete setup for deploying:
 - Llama 3.2-3B model using vLLM on OpenShift AI
 - Llama Stack for agent-based interactions
 - Sample HR application providing restful services to HR data e.g. vacation booking
@@ -142,7 +142,7 @@ All components are deployed using Helm charts located in the `helm/` directory:
 ### Clone the repository
 
 ```bash
-git clone https://github.com/rh-ai-kickstart/llama-stack-mcp-server.git && \
+git clone https://github.com/rh-ai-quickstart/llama-stack-mcp-server.git && \
     cd llama-stack-mcp-server/
 ```
 

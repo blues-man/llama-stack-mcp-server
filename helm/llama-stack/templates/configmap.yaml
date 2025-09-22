@@ -153,6 +153,11 @@ data:
       provider_id: model-context-protocol
       mcp_endpoint:
         uri: http://custom-mcp-server/sse
+    - toolgroup_id: mcp::swiss-transport
+      provider_id: model-context-protocol
+      mcp_endpoint:
+        uri: http://mcp-swiss-transport/sse
+
     server:
       port: 8001
 {{- end }}

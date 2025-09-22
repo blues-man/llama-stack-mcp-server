@@ -15,7 +15,8 @@ components:
     enabled: true
   custom-mcp-server:
     enabled: true
-
+  mcp-swiss-transport:
+    enabled: true
 # Llama Stack Configuration
 llama-stack: {}
   
@@ -32,5 +33,5 @@ hr-enterprise-api: {}
 custom-mcp-server: {}
   # HR API connection settings - override default configuration
 
-
+mcp-swiss-transport: {}
 

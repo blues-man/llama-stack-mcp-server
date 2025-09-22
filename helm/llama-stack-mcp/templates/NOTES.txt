@@ -16,6 +16,11 @@ Components deployed:
 {{- if index .Values.components "custom-mcp-server" "enabled" }}
 ✓ Custom MCP Server (HR Integration)
 {{- end }}
+{{- if index .Values.components "mcp-swiss-transport" "enabled" }}
+✓ MCP Swiss Transportation (Custom MCP)
+{{- end }}
+
+
 
 To get the playground URL:
   export PLAYGROUND_URL=$(oc get route llama-stack-playground -o jsonpath='{.spec.host}' 2>/dev/null || echo "Route not found")

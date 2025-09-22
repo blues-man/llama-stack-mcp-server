@@ -48,3 +48,8 @@ dependencies:
     version: "1.0.0"
     repository: "file://../custom-mcp-server"
     condition: components.custom-mcp-server.enabled
+  - name: mcp-swiss-transport
+    version: "1.0.0"
+    repository: "file://../mcp-swiss-transport"
+    condition: components.mcp-swiss-transport.enabled
+

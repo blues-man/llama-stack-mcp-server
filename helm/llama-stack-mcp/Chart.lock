@@ -17,5 +17,8 @@ dependencies:
 - name: custom-mcp-server
   repository: file://../custom-mcp-server
   version: 1.0.0
-digest: sha256:1ecb7b376283dd8d8daa87ffcc92091af2de6ac1103ede5463a1f8c756a7136b
-generated: "2025-06-11T12:12:57.705591-04:00"
+- name: mcp-swiss-transport
+  repository: file://../mcp-swiss-transport
+  version: 1.0.0
+digest: sha256:92730b71bf7dfa99700c7d26318e80cc8551f072affac599b86199e363ad0580
+generated: "2025-09-22T17:04:18.052419831+02:00"

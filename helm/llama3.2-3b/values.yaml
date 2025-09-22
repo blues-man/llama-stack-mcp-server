@@ -27,9 +27,9 @@ nodeSelector:
   nvidia.com/gpu.present: "true"
 
 tolerations:
-  - effect: NoSchedule
-    key: nvidia.com/gpu
-    value: NVIDIA-A10G-SHARED
+  - key: nvidia.com/gpu
+    operator: Exists
+    effect: NoSchedule
 
 affinity:
   nodeAffinity:

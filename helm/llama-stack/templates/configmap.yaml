@@ -157,6 +157,11 @@ data:
       provider_id: model-context-protocol
       mcp_endpoint:
         uri: http://mcp-swiss-transport/sse
+    - toolgroup_id: mcp::vienna-transport
+      provider_id: model-context-protocol
+      mcp_endpoint:
+        uri: http://mcp-vienna-transport/sse
+
 
     server:
       port: 8001

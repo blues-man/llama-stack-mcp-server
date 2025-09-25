@@ -52,4 +52,8 @@ dependencies:
     version: "1.0.0"
     repository: "file://../mcp-swiss-transport"
     condition: components.mcp-swiss-transport.enabled
+  - name: mcp-vienna-transport
+    version: "1.0.0"
+    repository: "file://../mcp-vienna-transport"
+    condition: components.mcp-vienna-transport.enabled
 

@@ -17,6 +17,8 @@ components:
     enabled: true
   mcp-swiss-transport:
     enabled: true
+  mcp-vienna-transport:
+    enabled: true
 # Llama Stack Configuration
 llama-stack: {}
   
@@ -34,4 +36,6 @@ custom-mcp-server: {}
   # HR API connection settings - override default configuration
 
 mcp-swiss-transport: {}
+
+mcp-vienna-transport: {}
 

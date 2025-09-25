@@ -19,6 +19,10 @@ Components deployed:
 {{- if index .Values.components "mcp-swiss-transport" "enabled" }}
 ✓ MCP Swiss Transportation (Custom MCP)
 {{- end }}
+{{- if index .Values.components "mcp-vienna-transport" "enabled" }}
+✓ MCP Vienna Transportation (Custom MCP)
+{{- end }}
+
 
 
 

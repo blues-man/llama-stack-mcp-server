@@ -1,0 +1,25 @@
+apiVersion: v2
+name: mcp-riyadh-transport
+description: A Helm chart for MCP Riyadh Transport Server
+type: application
+version: 1.0.0
+appVersion: "latest"
+keywords:
+  - mcp
+  - riyadh-transport
+  - transportation
+  - saudi-arabia
+  - rcrc
+  - llama-stack
+home: https://github.com/company/llama-stack-mcp-server
+sources:
+  - https://github.com/company/llama-stack-mcp-server
+maintainers:
+  - name: AI Engineering Team
+    email: ai-engineering@company.com
+annotations:
+  category: AI Applications
+  openshift.io/display-name: "MCP Riyadh Transport Server"
+  openshift.io/provider-display-name: "AI Engineering Team"
+  openshift.io/documentation-url: "https://docs.company.com/mcp-riyadh-transport"
+  openshift.io/support-url: "https://support.company.com"

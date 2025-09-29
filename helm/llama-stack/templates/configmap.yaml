@@ -161,6 +161,11 @@ data:
       provider_id: model-context-protocol
       mcp_endpoint:
         uri: http://mcp-vienna-transport/sse
+    - toolgroup_id: mcp::riyadh-transport
+      provider_id: model-context-protocol
+      mcp_endpoint:
+        uri: http://mcp-riyadh-transport/sse
+
 
 
     server:

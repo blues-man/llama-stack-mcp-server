@@ -1,0 +1,99 @@
+# Default values for mcp-riyadh-transport
+replicaCount: 1
+
+image:
+  repository: quay.io/bluesman/mcp-riyadh-transport
+  tag: "1.0.0"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  # Remove specific UID/GID to let OpenShift assign them
+  # fsGroup: 1001
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  # Remove specific UID/GID to let OpenShift assign them
+  # runAsUser: 1001
+  # runAsGroup: 1001
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+  annotations: {}
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+livenessProbe:
+  tcpSocket:
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  tcpSocket:
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+autoscaling:
+  enabled: false
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Riyadh Transport API configuration
+transport:
+  # Riyadh transport API configuration using RCRC open data
+  # No API key required - uses public opendata.rcrc.gov.sa API
+  apiUrl: "https://opendata.rcrc.gov.sa/api/explore/v2.1/catalog/datasets"
+  # Dataset name for bus routes
+  datasetName: "bus-roads-by-direction-in-riyadh-2024"
+  # Cache TTL for transport data
+  cacheTtl: "300"  # 5 minutes
+  # Default route codes for common routes
+  defaultRoutes:
+    - "L19-1"  # Transportation Center → King Saud University
+    - "L11-1"  # West Al-Uraija → Ar Rabi
+    - "L13-1"  # As-Sulaimanyah → National Guard Hospital
+  # Timeout for API requests
+  requestTimeout: 30
+
+# Environment variables
+env:
+  MCP_SERVER_PORT: "8000"
+  MCP_SERVER_HOST: "0.0.0.0"
+  RIYADH_API_BASE: "https://opendata.rcrc.gov.sa/api/explore/v2.1/catalog/datasets"
+  DATASET_NAME: "bus-roads-by-direction-in-riyadh-2024"
+  TRANSPORT_CACHE_TTL: "300"  # 5 minutes
+

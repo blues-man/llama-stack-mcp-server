@@ -23,5 +23,8 @@ dependencies:
 - name: mcp-vienna-transport
   repository: file://../mcp-vienna-transport
   version: 1.0.0
-digest: sha256:5513050c3b11fac2bc65c827f90f30732a680fb6446e9bc89578783cbd19acf1
-generated: "2025-09-25T11:10:35.683513516+02:00"
+- name: mcp-riyadh-transport
+  repository: file://../mcp-riyadh-transport
+  version: 1.0.0
+digest: sha256:3750003846047f749e12acc7455f1ed9ee776f9401d4c5c06c5ae1a2bcffd00b
+generated: "2025-09-26T12:17:44.553675291+02:00"

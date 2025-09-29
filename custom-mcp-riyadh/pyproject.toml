@@ -1,0 +1,10 @@
+[project]
+name = "riyadh-transport"
+version = "0.1.0"
+description = "MCP server for Riyadh public transportation data using RCRC open data API"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.28.1",
+    "mcp[cli]>=1.6.0",
+]

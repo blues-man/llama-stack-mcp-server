@@ -22,6 +22,9 @@ Components deployed:
 {{- if index .Values.components "mcp-vienna-transport" "enabled" }}
 ✓ MCP Vienna Transportation (Custom MCP)
 {{- end }}
+{{- if index .Values.components "mcp-riyadh-transport" "enabled" }}
+✓ MCP Riyadh Bus Transportation (Custom MCP)
+{{- end }}
 
 
 

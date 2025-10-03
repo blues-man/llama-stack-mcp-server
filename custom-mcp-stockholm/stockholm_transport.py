@@ -7,7 +7,7 @@ from mcp.server.fastmcp import FastMCP
 mcp = FastMCP("stockholm-transport", host="0.0.0.0")
 
 TRANSPORT_API_BASE = "https://realtime-api.trafiklab.se/v1"
-TRANSPORT_API_KEY = os.getenv("API_KEY", "3d2a9300eef04982a43bf819b07113ab")
+TRANSPORT_API_KEY = os.getenv("TRANSPORT_API_KEY", "your_key")
 STOCKHOLM_AREA_ID = os.getenv("STOCKHOLM_AREA_ID", "740098000")
 USER_AGENT = "stockholm-transport-mcp/1.0"
 

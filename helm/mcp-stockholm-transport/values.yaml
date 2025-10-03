@@ -76,7 +76,7 @@ affinity: {}
 transport:
   # Stockholm transport API configuration using Trafiklab Realtime API
   apiUrl: "https://realtime-api.trafiklab.se/v1"
-  apiKey: "3d2a9300eef04982a43bf819b07113ab"
+  apiKey: "your_key"
   # Default Stockholm area ID
   areaId: "740098000"
   # Cache TTL for transport data

@@ -46,7 +46,7 @@ The following table lists the configurable parameters and their default values:
 | `service.port` | Service port | `80` |
 | `service.targetPort` | Container port | `8000` |
 | `transport.apiUrl` | Stockholm transport API URL | `https://realtime-api.trafiklab.se/v1` |
-| `transport.apiKey` | Trafiklab API key | `3d2a9300eef04982a43bf819b07113ab` |
+| `transport.apiKey` | Trafiklab API key | `your_key` |
 | `transport.areaId` | Stockholm area ID | `740098000` |
 | `transport.cacheTtl` | Cache TTL in seconds | `300` |
 | `transport.defaultLimit` | Default search result limit | `10` |

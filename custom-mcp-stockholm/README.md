@@ -42,7 +42,7 @@ The server provides the following tools:
 ## API Information
 
 - **API Base URL**: https://realtime-api.trafiklab.se/v1
-- **API Key**: 3d2a9300eef04982a43bf819b07113ab (hardcoded in the server)
+- **API Key**: Your Trafiklab API Key for Real Time API
 - **Default Area ID**: 740098000 (Stockholm)
 - **Documentation**: https://www.trafiklab.se/api/our-apis/trafiklab-realtime-apis/openapi-specification/
 

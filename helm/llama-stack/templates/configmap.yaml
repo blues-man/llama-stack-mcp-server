@@ -165,6 +165,10 @@ data:
       provider_id: model-context-protocol
       mcp_endpoint:
         uri: http://mcp-riyadh-transport/sse
+    - toolgroup_id: mcp::stockholm-transport
+      provider_id: model-context-protocol
+      mcp_endpoint:
+        uri: http://mcp-stockholm-transport/sse
 
 
 

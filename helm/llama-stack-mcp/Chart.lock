@@ -26,5 +26,8 @@ dependencies:
 - name: mcp-riyadh-transport
   repository: file://../mcp-riyadh-transport
   version: 1.0.0
-digest: sha256:3750003846047f749e12acc7455f1ed9ee776f9401d4c5c06c5ae1a2bcffd00b
-generated: "2025-09-26T12:17:44.553675291+02:00"
+- name: mcp-stockholm-transport
+  repository: file://../mcp-stockholm-transport
+  version: 1.0.0
+digest: sha256:fcd433f7bb68baa8fe2183896c716de1c201ce1e82aea5698da2f204e7dcd0e9
+generated: "2025-10-03T11:15:13.210624633+02:00"

@@ -25,6 +25,10 @@ Components deployed:
 {{- if index .Values.components "mcp-riyadh-transport" "enabled" }}
 ✓ MCP Riyadh Bus Transportation (Custom MCP)
 {{- end }}
+{{- if index .Values.components "mcp-stockholm-transport" "enabled" }}
+✓ MCP Stockholm Transportation (Custom MCP)
+{{- end }}
+
 
 
 

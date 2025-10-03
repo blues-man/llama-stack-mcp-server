@@ -6,6 +6,9 @@ WORKDIR /mcp_server
 
 COPY . /mcp_server
 
+ENV TRANSPORT_API_KEY="your_key"
+ENV STOCKHOLM_AREA_ID="740098000"
+
 EXPOSE 8000
 
 ENTRYPOINT [ "python", "stockholm_transport.py" ]

@@ -1,13 +1,14 @@
 from typing import Any, Optional
 import httpx
+import os
 from datetime import datetime
 from mcp.server.fastmcp import FastMCP
 
 mcp = FastMCP("stockholm-transport", host="0.0.0.0")
 
 TRANSPORT_API_BASE = "https://realtime-api.trafiklab.se/v1"
-API_KEY = "3d2a9300eef04982a43bf819b07113ab"
-STOCKHOLM_AREA_ID = "740098000"
+TRANSPORT_API_KEY = os.getenv("API_KEY", "3d2a9300eef04982a43bf819b07113ab")
+STOCKHOLM_AREA_ID = os.getenv("STOCKHOLM_AREA_ID", "740098000")
 USER_AGENT = "stockholm-transport-mcp/1.0"
 
 
@@ -70,7 +71,7 @@ async def get_departures(
         area_id: Area ID for the location (default: Stockholm area 740098000)
         limit: Maximum number of departures to return (default: 10)
     """
-    url = f"{TRANSPORT_API_BASE}/departures/{area_id}?key={API_KEY}"
+    url = f"{TRANSPORT_API_BASE}/departures/{area_id}?key={TRANSPORT_API_KEY}"
 
     data = await make_transport_request(url)
 
@@ -96,7 +97,7 @@ async def get_arrivals(
         area_id: Area ID for the location (default: Stockholm area 740098000)
         limit: Maximum number of arrivals to return (default: 10)
     """
-    url = f"{TRANSPORT_API_BASE}/arrivals/{area_id}?key={API_KEY}"
+    url = f"{TRANSPORT_API_BASE}/arrivals/{area_id}?key={TRANSPORT_API_KEY}"
 
     data = await make_transport_request(url)
 

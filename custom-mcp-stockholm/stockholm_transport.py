@@ -27,37 +27,55 @@ async def make_transport_request(url: str) -> dict[str, Any] | None:
 
 def format_departure(departure: dict) -> str:
     """Format a departure into a readable string."""
-    stop_name = departure.get("stop_area_name", "Unknown stop")
-    line_number = departure.get("line_number", "")
-    line_designation = departure.get("line_designation", "")
-    destination = departure.get("destination", "Unknown destination")
-    display_time = departure.get("display_time", "N/A")
-    expected_time = departure.get("expected", "")
-    journey_direction = departure.get("journey_direction", "")
+    stop = departure.get("stop", {})
+    stop_name = stop.get("name", "Unknown stop")
+
+    route = departure.get("route", {})
+    line_designation = route.get("designation", "")
+    destination = route.get("direction", "Unknown destination")
+    transport_mode = route.get("transport_mode", "")
+
+    scheduled = departure.get("scheduled", "")
+    realtime = departure.get("realtime", "")
+    delay = departure.get("delay", 0)
+
+    # Format time (extract HH:MM from ISO timestamp)
+    scheduled_time = scheduled.split("T")[1][:5] if "T" in scheduled else scheduled
 
     # Format time with delay if applicable
-    time_info = display_time
-    if expected_time and expected_time != display_time:
-        time_info = f"{display_time} (Expected: {expected_time})"
+    if delay > 0:
+        time_info = f"{scheduled_time} (+{delay//60}min)"
+    else:
+        time_info = scheduled_time
 
-    return f"{time_info} - Line {line_number} {line_designation} to {destination}"
+    return f"{time_info} - {transport_mode} {line_designation} to {destination}"
 
 
 def format_arrival(arrival: dict) -> str:
     """Format an arrival into a readable string."""
-    stop_name = arrival.get("stop_area_name", "Unknown stop")
-    line_number = arrival.get("line_number", "")
-    line_designation = arrival.get("line_designation", "")
-    origin = arrival.get("origin", "Unknown origin")
-    display_time = arrival.get("display_time", "N/A")
-    expected_time = arrival.get("expected", "")
+    stop = arrival.get("stop", {})
+    stop_name = stop.get("name", "Unknown stop")
+
+    route = arrival.get("route", {})
+    line_designation = route.get("designation", "")
+    origin_dest = route.get("origin", {})
+    origin = origin_dest.get("name", "Unknown origin") if isinstance(origin_dest, dict) else origin_dest
+    transport_mode = route.get("transport_mode", "")
+
+    scheduled = arrival.get("scheduled", "")
+    realtime = arrival.get("realtime", "")
+    delay = arrival.get("delay", 0)
+
+    # Format time (extract HH:MM from ISO timestamp)
+    scheduled_time = scheduled.split("T")[1][:5] if "T" in scheduled else scheduled
 
     # Format time with delay if applicable
-    time_info = display_time
-    if expected_time and expected_time != display_time:
-        time_info = f"{display_time} (Expected: {expected_time})"
+    if delay > 0:
+        time_info = f"{scheduled_time} (+{delay//60}min)"
+    else:
+        time_info = scheduled_time
 
-    return f"{time_info} - Line {line_number} {line_designation} from {origin}"
+    return f"{time_info} - {transport_mode} {line_designation} from {origin}"
 
 
 @mcp.tool()

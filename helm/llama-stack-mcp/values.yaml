@@ -23,6 +23,9 @@ components:
     enabled: true
   mcp-stockholm-transport:
     enabled: true
+  mcp-helsinki-transport:
+    enabled: true
+
 
 
 # Llama Stack Configuration
@@ -48,4 +51,6 @@ mcp-vienna-transport: {}
 mcp-riyadh-transport: {}
 
 mcp-stockholm-transport: {}
+
+mcp-helsinki-transport: {}
 

@@ -28,6 +28,9 @@ Components deployed:
 {{- if index .Values.components "mcp-stockholm-transport" "enabled" }}
 ✓ MCP Stockholm Transportation (Custom MCP)
 {{- end }}
+{{- if index .Values.components "mcp-helsinki-transport" "enabled" }}
+✓ MCP Helsinki Transportation (Custom MCP)
+{{- end }}
 
 
 

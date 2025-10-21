@@ -41,9 +41,15 @@ python test_helsinki_transport.py
 
 The server provides the following tools:
 
+- `find_stop`: Find stops by name and get their IDs (useful for finding the stop ID needed by other tools)
+  - Parameters: `name` (required, part of stop name), `limit` (optional, default: 10)
+  - Example: Search for "Kamppi" to find all stops matching that name
 - `get_departures`: Get real-time departures from a Helsinki stop (default: HSL:1040129 - Arkadian puisto)
+  - Parameters: `stop_id` (optional), `limit` (optional, default: 10)
 - `get_timetable`: Get timetable for a stop within a specific time range
+  - Parameters: `stop_id` (optional), `start_time` (optional), `time_range` (optional, default: 3600 seconds)
 - `get_stop_info`: Get detailed information about a specific stop
+  - Parameters: `stop_id` (required)
 
 ## API Information
 

@@ -246,5 +246,60 @@ Platform: {stop.get('platformCode', 'N/A')}
     return result
 
 
+@mcp.tool()
+async def find_stop(name: str, limit: int = 10) -> str:
+    """Find stops by name and get their IDs.
+
+    Args:
+        name: Part of the stop name to search for (case-insensitive, partial match supported)
+        limit: Maximum number of results to return (default: 10)
+    """
+    query = f"""
+    {{
+      stops(name: "{name}") {{
+        gtfsId
+        name
+        code
+        desc
+        lat
+        lon
+      }}
+    }}
+    """
+
+    data = await make_graphql_request(query)
+
+    if not data or "data" not in data:
+        return f"Unable to search for stops with name: {name}"
+
+    stops = data["data"].get("stops", [])
+
+    if not stops:
+        return f"No stops found matching: {name}"
+
+    # Limit results
+    stops = stops[:limit]
+
+    results = []
+    for stop in stops:
+        stop_id = stop.get("gtfsId", "N/A")
+        stop_name = stop.get("name", "N/A")
+        code = stop.get("code", "N/A")
+        desc = stop.get("desc", "N/A")
+        lat = stop.get("lat", "N/A")
+        lon = stop.get("lon", "N/A")
+
+        results.append(
+            f"ID: {stop_id}\n"
+            f"  Name: {stop_name}\n"
+            f"  Code: {code}\n"
+            f"  Location: {desc}\n"
+            f"  Coordinates: {lat}, {lon}"
+        )
+
+    header = f"Found {len(stops)} stop(s) matching '{name}':\n\n"
+    return header + "\n\n".join(results)
+
+
 if __name__ == "__main__":
     mcp.run(transport='sse')

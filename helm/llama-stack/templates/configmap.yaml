@@ -169,6 +169,10 @@ data:
       provider_id: model-context-protocol
       mcp_endpoint:
         uri: http://mcp-stockholm-transport/sse
+    - toolgroup_id: mcp::helsinki-transport
+      provider_id: model-context-protocol
+      mcp_endpoint:
+        uri: http://mcp-helsinki-transport/sse
 
 
 

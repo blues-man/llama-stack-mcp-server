@@ -1,0 +1,24 @@
+apiVersion: v2
+name: mcp-helsinki-transport
+description: A Helm chart for MCP Helsinki Transport Server
+type: application
+version: 1.0.0
+appVersion: "latest"
+keywords:
+  - mcp
+  - helsinki-transport
+  - transportation
+  - llama-stack
+  - hsl
+home: https://github.com/company/llama-stack-mcp-server
+sources:
+  - https://github.com/company/llama-stack-mcp-server
+maintainers:
+  - name: AI Engineering Team
+    email: ai-engineering@company.com
+annotations:
+  category: AI Applications
+  openshift.io/display-name: "MCP Helsinki Transport Server"
+  openshift.io/provider-display-name: "AI Engineering Team"
+  openshift.io/documentation-url: "https://docs.company.com/mcp-helsinki-transport"
+  openshift.io/support-url: "https://support.company.com"

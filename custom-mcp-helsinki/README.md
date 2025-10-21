@@ -14,7 +14,7 @@ source venv/bin/activate
 ### Set the API key
 
 ```bash
-export DIGITRANSIT_API_KEY="7362abc5ea0a45f4805cda7238143a0a"
+export DIGITRANSIT_API_KEY="<YOUR_KEY>"
 ```
 
 ### Install dependencies

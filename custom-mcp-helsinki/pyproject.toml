@@ -1,0 +1,10 @@
+[project]
+name = "helsinki-transport"
+version = "0.1.0"
+description = "MCP server for Helsinki public transportation data using Digitransit GraphQL API"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.28.1",
+    "mcp[cli]>=1.6.0",
+]

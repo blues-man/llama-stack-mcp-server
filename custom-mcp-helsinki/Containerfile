@@ -1,0 +1,14 @@
+FROM registry.access.redhat.com/ubi9/python-311:latest
+
+RUN pip install mcp["cli"] httpx
+
+WORKDIR /mcp_server
+
+COPY . /mcp_server
+
+ENV DIGITRANSIT_API_KEY="your_key"
+ENV DEFAULT_STOP_ID="HSL:1040129"
+
+EXPOSE 8000
+
+ENTRYPOINT [ "python", "helsinki_transport.py" ]

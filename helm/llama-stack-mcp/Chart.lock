@@ -32,5 +32,8 @@ dependencies:
 - name: mcp-helsinki-transport
   repository: file://../mcp-helsinki-transport
   version: 1.0.0
-digest: sha256:075783982ab11db2ebc56de42a69e82de1dc207cd7af8d2b257aeef00c1b9585
-generated: "2025-10-22T00:36:09.634195454+02:00"
+- name: mcp-dubai-transport
+  repository: file://../mcp-dubai-transport
+  version: 1.0.0
+digest: sha256:2a9be95d74a5612b5497f2acd66bf262265fa6b935d4ed54ee40e97bf4e7fac1
+generated: "2025-11-18T20:17:27.949352989+04:00"

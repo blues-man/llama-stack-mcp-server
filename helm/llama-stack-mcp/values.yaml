@@ -25,6 +25,8 @@ components:
     enabled: true
   mcp-helsinki-transport:
     enabled: true
+  mcp-dubai-transport:
+    enabled: true
 
 
 

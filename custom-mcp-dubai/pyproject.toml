@@ -1,0 +1,11 @@
+[project]
+name = "dubai-transport"
+version = "0.1.0"
+description = "MCP server for Dubai RTA bus journey planner with PDF timetable parsing"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.28.1",
+    "mcp[cli]>=1.6.0",
+    "pdfplumber>=0.11.0",
+]

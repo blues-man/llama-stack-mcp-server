@@ -68,5 +68,9 @@ dependencies:
     version: "1.0.0"
     repository: "file://../mcp-helsinki-transport"
     condition: components.mcp-helsinki-transport.enabled
+  - name: mcp-dubai-transport
+    version: "1.0.0"
+    repository: "file://../mcp-dubai-transport"
+    condition: components.mcp-dubai-transport.enabled
 
 

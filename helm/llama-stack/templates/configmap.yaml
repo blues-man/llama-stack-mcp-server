@@ -173,6 +173,10 @@ data:
       provider_id: model-context-protocol
       mcp_endpoint:
         uri: http://mcp-helsinki-transport/sse
+    - toolgroup_id: mcp::dubai-transport
+      provider_id: model-context-protocol
+      mcp_endpoint:
+        uri: http://mcp-dubai-transport/sse
 
 
 

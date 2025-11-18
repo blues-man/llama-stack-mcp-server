@@ -1,6 +1,7 @@
 from typing import Any, Optional
 import httpx
 import os
+import re
 from datetime import datetime, timedelta
 from mcp.server.fastmcp import FastMCP
 
@@ -32,6 +33,42 @@ async def make_graphql_request(query: str) -> dict[str, Any] | None:
             return response.json()
         except Exception as e:
             print(f"Error making GraphQL request: {e}")
+            return None
+
+
+async def geocode_location(location_name: str) -> tuple[float, float, str] | None:
+    """Geocode a location name to coordinates using Digitransit Geocoding API.
+
+    Args:
+        location_name: Name of the location to geocode
+
+    Returns:
+        Tuple of (latitude, longitude, label) or None if geocoding fails
+    """
+    url = "https://api.digitransit.fi/geocoding/v1/search"
+    params = {
+        "text": location_name,
+        "size": 1
+    }
+    headers = {
+        "digitransit-subscription-key": DIGITRANSIT_API_KEY
+    }
+
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.get(url, params=params, headers=headers, timeout=10.0)
+            response.raise_for_status()
+            data = response.json()
+
+            features = data.get("features", [])
+            if features and len(features) > 0:
+                coords = features[0]["geometry"]["coordinates"]
+                lon, lat = coords  # GeoJSON uses [lon, lat] order
+                label = features[0]["properties"].get("label", location_name)
+                return (lat, lon, label)
+            return None
+        except Exception as e:
+            print(f"Error geocoding location: {e}")
             return None
 
 
@@ -91,11 +128,20 @@ async def get_departures(
     stop_id: str = DEFAULT_STOP_ID,
     limit: int = 10
 ) -> str:
-    """Get departures for Helsinki public transportation.
+    """Get real-time departures for a Helsinki public transport stop.
+
+    Use this tool to see upcoming departures from a specific stop.
+    No session ID or authentication required.
 
     Args:
-        stop_id: Stop ID in format HSL:xxxxxxx (default: HSL:1040129 - Arkadian puisto)
-        limit: Maximum number of departures to return (default: 10)
+        stop_id: The stop ID in HSL format (e.g., "HSL:1040129").
+                 Use the find_stop tool first if you don't know the stop ID.
+                 Default is HSL:1040129 (Arkadian puisto).
+        limit: Maximum number of departures to return. Default is 10.
+
+    Returns:
+        A formatted string showing departure times, routes, and destinations.
+        Includes delay information if available.
     """
     query = f"""
     {{
@@ -147,12 +193,20 @@ async def get_timetable(
     start_time: int = 0,
     time_range: int = 3600
 ) -> str:
-    """Get timetable for a stop within a specific time range.
+    """Get timetable for a Helsinki public transport stop within a time range.
+
+    Use this tool to see scheduled departures for a specific time window.
+    No session ID or authentication required.
 
     Args:
-        stop_id: Stop ID in format HSL:xxxxxxx (default: HSL:1040129 - Arkadian puisto)
-        start_time: Start time in seconds from midnight (default: 0 = now)
-        time_range: Time range in seconds from start_time (default: 3600 = 1 hour)
+        stop_id: The stop ID in HSL format (e.g., "HSL:1040129").
+                 Use the find_stop tool first if you don't know the stop ID.
+                 Default is HSL:1040129 (Arkadian puisto).
+        start_time: Start time in seconds from midnight. Use 0 for current time. Default is 0.
+        time_range: Time range in seconds from start_time. Default is 3600 (1 hour).
+
+    Returns:
+        A formatted string showing scheduled departures within the time range.
     """
     query = f"""
     {{
@@ -205,10 +259,18 @@ async def get_timetable(
 
 @mcp.tool()
 async def get_stop_info(stop_id: str) -> str:
-    """Get information about a specific stop.
+    """Get detailed information about a specific Helsinki public transport stop.
+
+    Use this tool to get stop details like name, location, zone, and platform.
+    No session ID or authentication required.
 
     Args:
-        stop_id: Stop ID in format HSL:xxxxxxx
+        stop_id: The stop ID in HSL format (e.g., "HSL:1040129").
+                 Use the find_stop tool first if you don't know the stop ID.
+
+    Returns:
+        A formatted string with stop name, ID, code, description, coordinates,
+        zone, and platform information.
     """
     query = f"""
     {{
@@ -247,58 +309,159 @@ Platform: {stop.get('platformCode', 'N/A')}
 
 
 @mcp.tool()
-async def find_stop(name: str, limit: int = 10) -> str:
-    """Find stops by name and get their IDs.
+async def find_stop(query: str, limit: int = 10, radius: int = 500) -> str:
+    """Find public transport stops by name or location in Helsinki area.
+
+    Use this tool to search for stops and get their stop IDs needed for other tools.
+    No session ID or authentication required - just provide a search query.
+
+    Supports two search modes:
+    1. Name search: Just provide the stop name (e.g., "Kamppi", "Rautatientori")
+    2. Location search: Use natural language (e.g., "near Scandic Grand Marina", "close to Senate Square")
 
     Args:
-        name: Part of the stop name to search for (case-insensitive, partial match supported)
-        limit: Maximum number of results to return (default: 10)
+        query: The search query. Can be either:
+               - A stop name: "Kamppi", "Rautatientori", "central station"
+               - A location phrase: "near [place]", "close to [place]", "around [place]"
+        limit: Maximum number of results to return. Default is 10.
+        radius: Search radius in meters for location-based searches. Default is 500.
+
+    Returns:
+        A formatted string with stop IDs, names, codes, locations, and coordinates.
+        For location searches, also includes distance in meters.
     """
-    query = f"""
-    {{
-      stops(name: "{name}") {{
-        gtfsId
-        name
-        code
-        desc
-        lat
-        lon
-      }}
-    }}
-    """
+    # Detect if this is a location-based query
+    location_patterns = [
+        r"(?:near|close to|around|by|at|in)\s+(.+)",
+        r"(.+?)\s+(?:area|vicinity|neighborhood)",
+        r"stops?\s+(?:near|around|at|in)\s+(.+)"
+    ]
 
-    data = await make_graphql_request(query)
+    location_name = None
+    for pattern in location_patterns:
+        match = re.search(pattern, query, re.IGNORECASE)
+        if match:
+            location_name = match.group(1).strip()
+            break
 
-    if not data or "data" not in data:
-        return f"Unable to search for stops with name: {name}"
+    # If location-based query, use geocoding + nearest
+    if location_name:
+        geocode_result = await geocode_location(location_name)
+        if not geocode_result:
+            return f"Unable to find location: {location_name}"
 
-    stops = data["data"].get("stops", [])
+        lat, lon, label = geocode_result
 
-    if not stops:
-        return f"No stops found matching: {name}"
+        # Use the nearest query to find stops
+        graphql_query = f"""
+        {{
+          nearest(
+            lat: {lat},
+            lon: {lon},
+            maxDistance: {radius},
+            first: {limit},
+            filterByPlaceTypes: STOP
+          ) {{
+            edges {{
+              node {{
+                place {{
+                  ...on Stop {{
+                    gtfsId
+                    name
+                    code
+                    desc
+                    lat
+                    lon
+                  }}
+                }}
+                distance
+              }}
+            }}
+          }}
+        }}
+        """
 
-    # Limit results
-    stops = stops[:limit]
+        data = await make_graphql_request(graphql_query)
 
-    results = []
-    for stop in stops:
-        stop_id = stop.get("gtfsId", "N/A")
-        stop_name = stop.get("name", "N/A")
-        code = stop.get("code", "N/A")
-        desc = stop.get("desc", "N/A")
-        lat = stop.get("lat", "N/A")
-        lon = stop.get("lon", "N/A")
+        if not data or "data" not in data or not data["data"].get("nearest"):
+            return f"Unable to find stops near: {label}"
 
-        results.append(
-            f"ID: {stop_id}\n"
-            f"  Name: {stop_name}\n"
-            f"  Code: {code}\n"
-            f"  Location: {desc}\n"
-            f"  Coordinates: {lat}, {lon}"
-        )
+        edges = data["data"]["nearest"].get("edges", [])
 
-    header = f"Found {len(stops)} stop(s) matching '{name}':\n\n"
-    return header + "\n\n".join(results)
+        if not edges:
+            return f"No stops found within {radius}m of: {label}"
+
+        results = []
+        for edge in edges:
+            node = edge["node"]
+            stop = node["place"]
+            distance = node["distance"]
+
+            stop_id = stop.get("gtfsId", "N/A")
+            stop_name = stop.get("name", "N/A")
+            code = stop.get("code", "N/A")
+            desc = stop.get("desc", "N/A")
+            stop_lat = stop.get("lat", "N/A")
+            stop_lon = stop.get("lon", "N/A")
+
+            results.append(
+                f"ID: {stop_id} ({distance}m away)\n"
+                f"  Name: {stop_name}\n"
+                f"  Code: {code}\n"
+                f"  Location: {desc}\n"
+                f"  Coordinates: {stop_lat}, {stop_lon}"
+            )
+
+        header = f"Found {len(edges)} stop(s) near {label}:\n\n"
+        return header + "\n\n".join(results)
+
+    # Otherwise, use name-based search
+    else:
+        graphql_query = f"""
+        {{
+          stops(name: "{query}") {{
+            gtfsId
+            name
+            code
+            desc
+            lat
+            lon
+          }}
+        }}
+        """
+
+        data = await make_graphql_request(graphql_query)
+
+        if not data or "data" not in data:
+            return f"Unable to search for stops with name: {query}"
+
+        stops = data["data"].get("stops", [])
+
+        if not stops:
+            return f"No stops found matching: {query}"
+
+        # Limit results
+        stops = stops[:limit]
+
+        results = []
+        for stop in stops:
+            stop_id = stop.get("gtfsId", "N/A")
+            stop_name = stop.get("name", "N/A")
+            code = stop.get("code", "N/A")
+            desc = stop.get("desc", "N/A")
+            lat = stop.get("lat", "N/A")
+            lon = stop.get("lon", "N/A")
+
+            results.append(
+                f"ID: {stop_id}\n"
+                f"  Name: {stop_name}\n"
+                f"  Code: {code}\n"
+                f"  Location: {desc}\n"
+                f"  Coordinates: {lat}, {lon}"
+            )
+
+        header = f"Found {len(stops)} stop(s) matching '{query}':\n\n"
+        return header + "\n\n".join(results)
 
 
 if __name__ == "__main__":

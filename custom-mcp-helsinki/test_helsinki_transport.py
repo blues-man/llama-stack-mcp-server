@@ -7,7 +7,7 @@ import os
 # Add the current directory to the path so we can import our module
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from helsinki_transport import get_departures, get_timetable, get_stop_info
+from helsinki_transport import get_departures, get_timetable, get_stop_info, find_stop
 
 
 async def test_get_departures():
@@ -55,12 +55,45 @@ async def test_custom_stop():
     print("\n" + "="*50 + "\n")
 
 
+async def test_find_stop_by_name():
+    """Test finding stops by name."""
+    print("=== Testing Find Stop by Name ===")
+
+    # Test name-based search
+    result = await find_stop("Kamppi", limit=3)
+    print("Searching for stops named 'Kamppi':")
+    print(result)
+    print("\n" + "="*50 + "\n")
+
+
+async def test_find_stop_by_location():
+    """Test finding stops by location using natural language."""
+    print("=== Testing Find Stop by Location ===")
+
+    # Test location-based search with natural language
+    test_queries = [
+        ("near Scandic Grand Marina", 3, 500),
+        ("close to Market Square", 3, 500),
+        ("around Helsinki Cathedral", 3, 500)
+    ]
+
+    for query, limit, radius in test_queries:
+        result = await find_stop(query, limit=limit, radius=radius)
+        print(f"Searching: '{query}'")
+        print(result)
+        print("\n" + "-"*50 + "\n")
+
+    print("="*50 + "\n")
+
+
 async def main():
     """Run all tests."""
     print("Helsinki Transport MCP Server Test Suite")
     print("="*50)
 
     try:
+        await test_find_stop_by_name()
+        await test_find_stop_by_location()
         await test_get_departures()
         await test_get_timetable()
         await test_get_stop_info()

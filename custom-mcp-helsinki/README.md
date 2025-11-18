@@ -41,9 +41,18 @@ python test_helsinki_transport.py
 
 The server provides the following tools:
 
-- `find_stop`: Find stops by name and get their IDs (useful for finding the stop ID needed by other tools)
-  - Parameters: `name` (required, part of stop name), `limit` (optional, default: 10)
-  - Example: Search for "Kamppi" to find all stops matching that name
+- `find_stop`: Find stops by name or location using natural language
+  - Parameters:
+    - `query` (required): Search query - can be a stop name or natural language location query
+    - `limit` (optional, default: 10): Maximum number of results
+    - `radius` (optional, default: 500): Search radius in meters for location-based searches
+  - Supports two types of searches:
+    - **Name search**: "Kamppi", "Rautatientori", "central station"
+    - **Location search**: "near Scandic Grand Marina", "close to Market Square", "around Helsinki Cathedral"
+  - Examples:
+    - `find_stop("Kamppi", 5)` - Find stops named "Kamppi"
+    - `find_stop("near Scandic Grand Marina", 5, 500)` - Find stops within 500m of the hotel
+    - `find_stop("stops near Helsinki Cathedral")` - Find stops near the cathedral
 - `get_departures`: Get real-time departures from a Helsinki stop (default: HSL:1040129 - Arkadian puisto)
   - Parameters: `stop_id` (optional), `limit` (optional, default: 10)
 - `get_timetable`: Get timetable for a stop within a specific time range
